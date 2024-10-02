@@ -1,16 +1,15 @@
-<<<<<<< HEAD
-=======
+
 # compiled output
 /dist
 /node_modules
 /build
 
->>>>>>> 8f2c2cd (feature start project)
+
 # Logs
 logs
 *.log
 npm-debug.log*
-<<<<<<< HEAD
+
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
@@ -80,7 +79,6 @@ web_modules/
 
 # Yarn Integrity file
 .yarn-integrity
-=======
 pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -108,7 +106,7 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
->>>>>>> 8f2c2cd (feature start project)
+
 
 # dotenv environment variable files
 .env
@@ -117,7 +115,7 @@ lerna-debug.log*
 .env.production.local
 .env.local
 
-<<<<<<< HEAD
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
@@ -167,7 +165,7 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-=======
+
 # temp directory
 .temp
 .tmp
@@ -180,4 +178,4 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
->>>>>>> 8f2c2cd (feature start project)
+
