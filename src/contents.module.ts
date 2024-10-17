@@ -4,6 +4,13 @@ import { ContentsService } from './contents.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import YouTubeHot from './entities/youtube_hot.entitiy';
+import YoutubeGame from './entities/youtube_game.entitiy';
+import YoutubeMusic from './entities/youtube_music.entitiy';
+import YoutubeSports from './entities/youtube_sports.entitiy';
+import Class from './entities/class.entitiy';
+import ClassCategory from './entities/class_category.entitiy';
+import ClassSubCategory from './entities/class_sub_category.entitiy';
+import ClassInstructor from './entities/class_instructor.entitiy';
 
 @Module({
 	imports: [
@@ -15,10 +22,28 @@ import YouTubeHot from './entities/youtube_hot.entitiy';
 			username: process.env.DB_USER,
 			password: process.env.DB_PASSWORD,
 			database: process.env.DB_NAME,
-			entities: [YouTubeHot],
+			entities: [
+				Class,
+				ClassInstructor,
+				ClassCategory,
+				ClassSubCategory,
+				YouTubeHot,
+				YoutubeGame,
+				YoutubeMusic,
+				YoutubeSports,
+			],
 			synchronize: true,
 		}),
-		TypeOrmModule.forFeature([YouTubeHot]),
+		TypeOrmModule.forFeature([
+			Class,
+			ClassInstructor,
+			ClassCategory,
+			ClassSubCategory,
+			YouTubeHot,
+			YoutubeGame,
+			YoutubeMusic,
+			YoutubeSports,
+		]),
 	],
 	controllers: [ContentsController],
 	providers: [ContentsService],
