@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LessThan, MoreThan, Repository } from 'typeorm';
+import { FindManyOptions, LessThan, MoreThan, Repository } from 'typeorm';
 import { ClassDto } from './dtos/class.dto';
 import Class from './entities/class.entitiy';
 import { YouTubeDto } from './dtos/youtube.dto';
@@ -8,6 +8,7 @@ import YoutubeHot from './entities/youtube_hot.entitiy';
 import YoutubeMusic from './entities/youtube_music.entitiy';
 import YoutubeGame from './entities/youtube_game.entitiy';
 import YoutubeSports from './entities/youtube_sports.entitiy';
+import { Category, SubCategory } from './contents.interface';
 
 @Injectable()
 export class ContentsService {
@@ -25,27 +26,40 @@ export class ContentsService {
 	) {}
 
 	// 강의
-	async getClass(take: number, lastId: number): Promise<ClassDto[]> {
+	async getClass(
+		category?: Category,
+		subCategory?: SubCategory,
+		take?: number,
+		lastId?: number,
+	): Promise<{ classes: ClassDto[]; noMoreData: boolean }> {
 		const takeNumber = isNaN(take) ? take : 20;
-		let classes;
 
-		if (isNaN(lastId)) {
-			classes = await this.classRepository.find({
-				order: { createdAt: 'DESC' },
-				take: take,
-				relations: ['instructor'],
-			});
+		const findOptions: FindManyOptions<Class> = {
+			order: { createdAt: 'DESC' },
+			take: take,
+			relations: ['instructor', 'category', 'subCategory'],
+			where: {},
+		};
+
+		if (subCategory) {
+			findOptions.where['subCategory'] = { name: subCategory };
 		} else {
-			classes = await this.classRepository.find({
-				where: {
-					id: LessThan(lastId),
-				},
-				order: { createdAt: 'DESC' },
-				take: take,
-				relations: ['instructor'],
-			});
+			if (category) {
+				findOptions.where['category'] = { name: category };
+			}
 		}
-		return classes.map(ClassDto.fromEntity);
+
+		if (!isNaN(lastId)) {
+			findOptions.where['id'] = LessThan(lastId);
+		}
+
+		const classes = await this.classRepository.find(findOptions);
+		const noMoreData = classes.length < take;
+
+		return {
+			classes: classes.map(ClassDto.fromEntity),
+			noMoreData: noMoreData,
+		};
 	}
 
 	// 유튜브
@@ -53,24 +67,31 @@ export class ContentsService {
 		const youTubes = await this.youTubeHotRepository.find({
 			take: 20,
 		});
+
 		return youTubes.map(YouTubeDto.fromEntity);
 	}
+
 	async getYouTubeMusic(): Promise<YouTubeDto[]> {
 		const youTubes = await this.youTubeMusicRepository.find({
 			take: 20,
 		});
+
 		return youTubes.map(YouTubeDto.fromEntity);
 	}
+
 	async getYouTubeGame(): Promise<YouTubeDto[]> {
 		const youTubes = await this.youTubeGameRepository.find({
 			take: 20,
 		});
+
 		return youTubes.map(YouTubeDto.fromEntity);
 	}
+
 	async getYouTubeSports(): Promise<YouTubeDto[]> {
 		const youTubes = await this.youTubeSportsRepository.find({
 			take: 20,
 		});
+
 		return youTubes.map(YouTubeDto.fromEntity);
 	}
 }

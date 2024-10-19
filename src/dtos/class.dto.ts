@@ -18,6 +18,14 @@ export class ClassDto {
 	@IsNotEmpty()
 	instructor: string;
 
+	@IsString()
+	@IsNotEmpty()
+	category: string;
+
+	@IsString()
+	@IsNotEmpty()
+	subCategory: string;
+
 	@IsNumber()
 	@IsNotEmpty()
 	price: number;
@@ -57,6 +65,8 @@ export class ClassDto {
 			soldCount: classEntity.soldCount,
 			ratedCount: classEntity.ratedCount,
 			rating: classEntity.rating,
+			category: classEntity.category.name,
+			subCategory: classEntity.subCategory.name,
 		});
 	}
 }
